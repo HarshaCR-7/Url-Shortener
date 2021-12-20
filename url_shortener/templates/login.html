@@ -4,6 +4,28 @@
 
 
 {% block content %}
+<style>
+  .alert {
+    padding: 20px;
+    background-color: #00ff4c;
+    color: white;
+  }
+  
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .closebtn:hover {
+    color: black;
+  }
+</style>
 {% if message.1 == 'success' %}
 <div class="container" style="width: 600px; margin-top: 10px;">
   
