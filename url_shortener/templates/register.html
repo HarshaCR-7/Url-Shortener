@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+
+{% block content %}
+<style>
+  .alert {
+    padding: 20px;
+    background-color: #00ff4c;
+    color: white;
+  }
+  
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .closebtn:hover {
+    color: black;
+  }
+</style>
+
+{% if message.1 == 'success' %}
+<div class="container" style="width: 600px; margin-top: 10px;">
+  
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message.0 }}</strong>
+    </div>
+{% elif message.1 == 'error' %}
+  <div class="alert" style="background-color: #ff0000;">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    <strong>{{ message.0 }}</strong>
+  </div>
+</div>
+{% endif %}
+<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+          <div class="d-flex justify-content-center py-4">
+            <a href="/" class="logo d-flex align-items-center w-auto">
+                <div class="icon">
+                    <i class="fa fa-rss mx-1" style="color: rgba(12, 12, 105, 0.932); font-size: 1.5rem;"></i>
+               </div>
+              <span class="d-lg-block">RSS FeedMixer</span>
+            </a>
+          </div><!-- End Logo -->
+
+          <div class="card mb-3">
+
+            <div class="card-body">
+
+              <div class="pt-4 pb-2">
+                <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                <p class="text-center small">Enter your personal details to create account</p>
+              </div>
+
+              <form action="/register" class="row g-3 needs-validation" method="POST">
+                <div class="col-12">
+                  <label for="yourName" class="form-label">Your Name</label>
+                  <input type="text" name="name" class="form-control" id="yourName" required>
+                  <div class="invalid-feedback">Please, enter your name!</div>
+                </div>
+
+                <div class="col-12">
+                  <label for="yourEmail" class="form-label">Your Email</label>
+                  <input type="email" name="email" class="form-control" id="yourEmail" required>
+                  <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                </div>
+
+                <div class="col-12">
+                  <label for="yourPassword1" class="form-label">Password</label>
+                  <input type="password" name="password1" class="form-control" id="yourPassword1" required>
+                  <div class="invalid-feedback">Please enter your password!</div>
+                </div>
+
+                <div class="col-12">
+                    <label for="yourPassword2" class="form-label">Confirm Password</label>
+                    <input type="password" name="password2" class="form-control" id="yourPassword2" required>
+                    <div class="invalid-feedback">Please confirm password!</div>
+                  </div>
+
+                
+                <div class="col-12">
+                  <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                </div>
+                <div class="col-12">
+                  <p class="small mb-0">Already have an account? <a href="/login">Log in</a></p>
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %} Add Feed {% endblock %}
+{% block body %}
+  <nav class="navbar navbar-expand-lg navbar-light rounded mb-5 py-4" style="background-color: white; font-size: large; opacity: 1; box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);">
+      <a class="navbar-brand" href="#"><div class="d-flex align-items-center">
+        <a href="/" class="logo d-flex ">
+         <div class="icon">
+          <i class="fa fa-rss fa-lg mx-1 mt-1" style="color: rgba(12, 12, 105, 0.932);"></i>
+         </div>
+         
+          <span>RSS FeedMixer</span>
+        </a>
+      </div></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse align-items-center me-5 pe-5" id="navbarsExample09">
+        <ul class="navbar-nav mr-auto">
+          
+        </ul>
+        
+        <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="/add">{{user.first_name}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item ">
+              <a class="nav-link" href="/register">Register</a>
+          </li>
+          {% endif %}
+      </ul>
+      </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+
+    <!-- <div class="pagetitle">
+      <h1>Blank Page</h1>
+    
+    </div>End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Add Feeds</h3>
+              <form method="POST">
+                <div class="input-wrapper">
+                    <label for="feed">Feed</label>
+                    <div class="form-group form-row">
+                        <div class="col-8">
+        
+                         <input type="text" name="field[]" value="" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed">
+                        </div>
+                        <div class="col-2">
+                         <a href="javascript:void(0);" class="add-input btn btn-primary mx-3" title="Add input">Add<i class="fa fa-plus-square ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="other-input-wrapper" style="margin-top: 10px;">
+                    <label for="limit">Inputs per feed(Optional)</label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="limit">
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-primary" name="cmdsubmit">
+                </div>
+                
+            </form>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">List Of Feeds</h3>
+              <li>
+                {% for link in links %}
+                  Original Url: {{ link.original_url }} <br>
+                  Short Url : {{ link.short_url }} <br>
+                  Visits : {{ link.visits }} <br>
+                  <br>
+                  <br/>
+                {% endfor %}
+              </li>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <script>
+        $(document).ready(function(){
+            var max_input_fields = 10;
+            var add_input = $('.add-input');
+            var input_wrapper = $('.input-wrapper');
+            var new_input = ' <div class="form-group form-row"><div class="col-8"><input type="text" name="field[]" value="" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed"> </div><div class="col-2 remove-input"><a href="javascript:void(0);" class=" btn btn-danger mx-3" title="Remove input">Remove<i class="fa fa-minus-square ms-2"></i></a></div></div>';
+            var add_input_count = 1; 
+            $(add_input).click(function(){
+                if(add_input_count < max_input_fields){
+                    add_input_count++; 
+                    $(input_wrapper).append(new_input); 
+                }
+            });
+            $(input_wrapper).on('click', '.remove-input', function(e){
+                e.preventDefault();
+                $(this).parent('div').remove();
+                add_input_count--;
+            });
+        });
+        </script>
+
+  {% endblock %}
+  {% block footer %}
+  <footer class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>RSS FeedMixer</span></strong>. All Rights Reserved
+    </div>
+
+  </footer><!-- End Footer -->
+  {% endblock %}
+
+
