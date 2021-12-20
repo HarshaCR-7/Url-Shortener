@@ -38,7 +38,7 @@ def redirect_to_url(short_url):
 @views.route('/stats')
 def stats():
     links = Link.query.all()
-    return render_template('stats.html',links=links)
+    return render_template('stats.html',links=links, user=current_user)
 
 
 @views.route('/add', methods = ['GET','POST'])

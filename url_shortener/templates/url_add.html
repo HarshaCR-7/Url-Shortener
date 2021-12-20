@@ -19,24 +19,23 @@
         <ul class="navbar-nav mr-auto">
           
         </ul>
-        
         <ul class="navbar-nav">
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="/add">{{user.first_name}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
-        {% else %}
+          {% if user.is_authenticated %}
           <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link" href="/add">{{user.first_name}}</a>
           </li>
-          <li class="nav-item ">
-              <a class="nav-link" href="/register">Register</a>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
           </li>
-          {% endif %}
-      </ul>
+          {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            {% endif %}
+        </ul>
       </div>
     </nav>
 {% endblock %}
@@ -48,6 +47,29 @@
       <h1>Blank Page</h1>
     
     </div>End Page Title -->
+    
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+    {% if messages %} 
+    {% for category, message in messages %} 
+    {% if category == 'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} 
+    {% endfor %} 
+    {% endif %} 
+    {% endwith %}
+
 
     <section class="section">
       <div class="row">
@@ -55,51 +77,53 @@
 
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title">Add Feeds</h3>
+              <p class="card-title" style="font-size: 1.5rem;">Add Feeds</p>
               <form method="POST">
                 <div class="input-wrapper">
-                    <label for="feed">Feed</label>
+                    <label for="feed">URL</label>
                     <div class="form-group form-row">
                         <div class="col-8">
         
-                         <input type="text" name="field[]" value="" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed">
+                         <input type="text" name="field[]" value="{{full_url}}" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed">
                         </div>
                         <div class="col-2">
-                         <a href="javascript:void(0);" class="add-input btn btn-primary mx-3" title="Add input">Add<i class="fa fa-plus-square ms-2"></i></a>
+                         <a href="javascript:void(0);" class="add-input btn btn-outline-primary mx-3" title="Add input"><i class="fa fa-plus"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="other-input-wrapper" style="margin-top: 10px;">
-                    <label for="limit">Inputs per feed(Optional)</label>
+                    <label for="limit">Feeds per URL (Optional)</label>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="limit">
+                        <input type="text" value="{{n}}" class="form-control" name="limit">
                     </div>
                 </div>
                 <div>
-                    <input type="submit" class="btn btn-primary" name="cmdsubmit">
+                    <input type="submit" class="btn btn-outline-primary mt-2" name="cmdsubmit">
                 </div>
                 
             </form>
             </div>
           </div>
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">List Of Feeds</h3>
-              <li>
-                {% for link in links %}
-                  Original Url: {{ link.original_url }} <br>
-                  Short Url : {{ link.short_url }} <br>
-                  Visits : {{ link.visits }} <br>
-                  <br>
-                  <br/>
-                {% endfor %}
-              </li>
-            </div>
-          </div>
 
+      
+        {% if links %}
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title" style="font-size: larger;">Your feed mix URLs.</h3>
+            <div class="mx-5" style="color:blue;">
+              {% for link in links %}
+             <div class="mb-2"> Full URL : {{link.original_url}}</div>
+             <div class="mb-4"> Short URL : {{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}</div>
+             <a class="btn btn-primary mb-4" href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">View FeedMix</a>
+             {% endfor %}
+            </div>
+            
+          </div>
         </div>
 
-      </div>
+        {% endif %}
+
+    
 
     </section>
 
@@ -108,7 +132,7 @@
             var max_input_fields = 10;
             var add_input = $('.add-input');
             var input_wrapper = $('.input-wrapper');
-            var new_input = ' <div class="form-group form-row"><div class="col-8"><input type="text" name="field[]" value="" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed"> </div><div class="col-2 remove-input"><a href="javascript:void(0);" class=" btn btn-danger mx-3" title="Remove input">Remove<i class="fa fa-minus-square ms-2"></i></a></div></div>';
+            var new_input = ' <div class="form-group form-row"><div class="col-8"><input type="text" name="field[]" value="" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed"> </div><div class="col-2 remove-input"><a href="javascript:void(0);" class=" btn btn-outline-danger mx-3" title="Remove input"><i class="fa fa-minus"></i></a></div></div>';
             var add_input_count = 1; 
             $(add_input).click(function(){
                 if(add_input_count < max_input_fields){
@@ -133,5 +157,4 @@
 
   </footer><!-- End Footer -->
   {% endblock %}
-
 
