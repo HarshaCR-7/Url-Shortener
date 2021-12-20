@@ -11,6 +11,7 @@ def create_app(config_file='settings.py'):
     api =   Api(app)
     app.config['SECRET_KEY'] = 'hjshjhdjahjfjfjkjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///db.sqlite3'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
 

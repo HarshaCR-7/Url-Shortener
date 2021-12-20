@@ -35,7 +35,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             message=['Account created!', 'success']
-            return redirect(url_for('auth.login'), message=message)
+            return redirect(url_for('auth.login'))
     return render_template("register.html", message="None")
 
 
