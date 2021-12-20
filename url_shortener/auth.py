@@ -35,7 +35,6 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             flash('Account created!', category='success')
-            print("Account created!") 
             return redirect(url_for('auth.login'))
     return render_template("register.html", message="None")
 
@@ -53,11 +52,13 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.add'))
             else:
-                flash('Incorrect password, try again.', category='error')
+                message=['Incorrect password, try again.', 'error']
+                return render_template("login.html", message=message)
         else:
-            flash('Email does not exist.', category='error')
+            message=['Email does not exist.', 'error']
+            return render_template("login.html", message=message)
 
-    return render_template("login.html", user=current_user)
+    return render_template("login.html", message="None")
 
 @auth.route('/logout')
 @login_required
