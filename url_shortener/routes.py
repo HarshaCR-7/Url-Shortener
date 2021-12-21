@@ -64,7 +64,11 @@ def add():
                 flash('Input field cannot be empty', category='error')
                 return render_template('url_add.html',user=current_user,links=links)
         if n:
-            str += '&n=' + n
+            if n.isdigit():
+                str += '&n=' + n
+            else:
+                flash('Feeds per URL should be integer', category='error')
+                return render_template('url_add.html',user=current_user,links=links) 
         
         link = Link(original_url=str, user_id=current_user.id)
         db.session.add(link)
