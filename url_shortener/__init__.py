@@ -1,11 +1,13 @@
-from flask import Flask, app
-
+from flask import Flask, app, render_template
 from .models import db, User
 from .routes import views
 from .auth import auth
 
 def create_app(config_file='settings.py'):
     app = Flask(__name__)
+    @app.errorhandler(404) 
+    def invalid_route(e): 
+        return render_template('404.html')
     app.config['SECRET_KEY'] = 'hjshjhdjahjfjfjkjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///db.sqlite3'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,3 +26,6 @@ def create_app(config_file='settings.py'):
         return User.query.get(int(id))
 
     return app
+
+
+
