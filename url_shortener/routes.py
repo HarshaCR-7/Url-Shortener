@@ -1,10 +1,10 @@
 import re
-from flask import Blueprint, render_template,redirect,request
+from flask import Blueprint, render_template,redirect,Response,request
 from flask.helpers import flash
 from .models import db
 from flask_login import login_user, login_required, logout_user, current_user
 from .models import Link,User,Subscription
-
+import requests
 views = Blueprint('views', __name__)
 
 @views.route('/')
@@ -33,7 +33,8 @@ def redirect_to_url(short_url):
     link.visits = link.visits + 1
     db.session.commit()
 
-    return redirect(link.original_url) 
+    r = requests.get(link.original_url)
+    return Response(r, mimetype='text/xml')
 
 @views.route('/stats')
 def stats():
