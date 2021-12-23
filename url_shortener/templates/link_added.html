@@ -60,11 +60,10 @@
 
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title" style="font-size: larger;">Your feed mix URLs.</h3>
+              <h3 class="card-title" style="font-size: 25px;">Your feed mix URL:</h3>
               <div class="mx-5" style="color:blue;">
-               <div class="mb-2"> Full URL : {{original_url}}</div>
-               <div class="mb-4"> Short URL : {{url_for('views.redirect_to_url',short_url=new_link, _external=True)}}</div>
-               <a class="btn btn-primary" href="{{url_for('views.redirect_to_url',short_url=new_link, _external=True)}}">View FeedMix</a>
+               <div style="font-size: 20px;" class="mb-4"> URL : <a href="{{url_for('views.redirect_to_url',short_url=new_link, _external=True)}}">{{url_for('views.redirect_to_url',short_url=new_link, _external=True)}}</a> </div>
+               <a  class="btn btn-primary" href="{{url_for('views.redirect_to_url',short_url=new_link, _external=True)}}">View FeedMix</a>
               </div>
               
             </div>

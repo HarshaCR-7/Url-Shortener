@@ -139,13 +139,13 @@
     {% if links %}
     <div class="card">
       <div class="card-body">
-        <h3 class="card-title" style="font-size: larger;">Your feed mix URLs.</h3>
+        <h1 class="card-title" style="font-size: 25px;">Your feed mix URLs.</h1>
         <div class="mx-5" style="color:blue;">
           {% for link in links %}
-         <div class="mb-4"><h3>URL : <a href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}</a> </h3></div>
+         <div class="mb-4"><h5>URL : <a href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}</a> </h5></div>
          <div class="form-row align-items-center">
           <div class="col-auto">
-            <a class="btn btn-primary mb-4" href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">View FeedMix</a>
+            <a class="btn btn-primary mb-4 btn-sm" href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">View FeedMix</a>
           </div>
           <div class="col-auto">
             <form style="margin-top:-25px" action="/dellink" method="POST">

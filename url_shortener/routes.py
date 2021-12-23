@@ -36,11 +36,6 @@ def redirect_to_url(short_url):
     r = requests.get(link.original_url)
     return Response(r, mimetype='text/xml')
 
-@views.route('/stats')
-def stats():
-    links = Link.query.all()
-    return render_template('stats.html',links=links, user=current_user)
-
 
 @views.route('/add', methods = ['GET','POST'])
 @login_required
@@ -54,7 +49,8 @@ def add():
     if request.method == 'POST':
         full_url = request.form.getlist('field[]')
         n = request.form['limit']
-        if len(full_url)<0:
+        print(len(full_url))
+        if len(full_url)<=0:
             flash('Input field cannot be empty', category='error')
             return render_template('url_add.html',sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls,user=current_user,links=links)
         i = 1
