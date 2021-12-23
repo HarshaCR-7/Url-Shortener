@@ -1,153 +1,291 @@
 {% extends "base.html" %}
 {% block title %} Add Feed {% endblock %}
 {% block body %}
-  <nav class="navbar navbar-expand-lg navbar-light rounded mb-5 py-4" style="background-color: white; font-size: large; opacity: 1; box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);">
-      <a class="navbar-brand" href="#"><div class="d-flex align-items-center">
-        <a href="/" class="logo d-flex ">
-         <div class="icon">
-          <i class="fa fa-rss fa-lg mx-1 mt-1" style="color: rgba(12, 12, 105, 0.932);"></i>
-         </div>
-         
-          <span>RSS FeedMixer</span>
-        </a>
-      </div></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<style>
+  .removebutton{
+    display: inline-block;
+    cursor: pointer; 
+    padding: 0px;
+    font-size: 15px;
+    height: 38px;
+    width: 38.57px;
+    text-decoration: none;
+    outline: none;
+    border-radius: 4px;
+    background-color: white;
+    color: rgb(255, 0, 0);
+    border: 1.5px solid #0099ff;
+  }
+  .removebutton:hover{
+    background-color: #0099ff;
+    color: rgb(255, 255, 255);
+  }
+  #listurls{
+    margin-bottom: 10px;
+  }
+  
+</style>
+<nav class="navbar navbar-expand-lg navbar-light rounded mb-5 py-4" style="background-color: white; font-size: large; opacity: 1; box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);">
+  <a class="navbar-brand" href="#"><div class="d-flex align-items-center">
+    <a id="clear" href="/" class="logo d-flex ">
+     <div class="icon">
+      <i class="fa fa-rss fa-lg mx-1 mt-1" style="color: rgba(12, 12, 105, 0.932);"></i>
+     </div>
+     
+      <span>RSS FeedMixer</span>
+    </a>
+  </div></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-      <div class="collapse navbar-collapse align-items-center me-5 pe-5" id="navbarsExample09">
-        <ul class="navbar-nav mr-auto">
-          
-        </ul>
-        <ul class="navbar-nav">
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="/add">{{user.first_name}}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
-          {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="/register">Register</a>
-            </li>
-            {% endif %}
-        </ul>
-      </div>
-    </nav>
+  <div class="collapse navbar-collapse align-items-center me-5 pe-5" id="navbarsExample09">
+    <ul class="navbar-nav mr-auto">
+      
+    </ul>
+    <ul class="navbar-nav">
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="/add">{{user.first_name}}</a>
+      </li>
+      <li class="nav-item">
+        <a id="clear" class="nav-link" href="/logout">Logout</a>
+      </li>
+      {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="/register">Register</a>
+        </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
 {% endblock %}
 
 {% block content %}
 
 
-    <!-- <div class="pagetitle">
-      <h1>Blank Page</h1>
-    
-    </div>End Page Title -->
-    
-    {% with messages = get_flashed_messages(with_categories=true) %} 
-    {% if messages %} 
-    {% for category, message in messages %} 
-    {% if category == 'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %} 
-    {% endfor %} 
-    {% endif %} 
-    {% endwith %}
+<!-- <div class="pagetitle">
+  <h1>Blank Page</h1>
+
+</div>End Page Title -->
+<input type="hidden" value="{{ sub_maxurls }}" class="planrestrict" >
+{% with messages = get_flashed_messages(with_categories=true) %} 
+{% if messages %} 
+{% for category, message in messages %} 
+{% if category == 'error' %}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} 
+{% endfor %} 
+{% endif %} 
+{% endwith %}
 
 
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
 
-          <div class="card">
-            <div class="card-body">
-              <p class="card-title" style="font-size: 1.5rem;">Add Feeds</p>
-              <form method="POST">
-                <div class="input-wrapper">
-                    <label for="feed">URL</label>
-                    <div class="form-group form-row">
-                        <div class="col-8">
-        
-                         <input type="text" name="field[]" value="{{full_url}}" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed">
-                        </div>
-                        <div class="col-2">
-                         <a href="javascript:void(0);" class="add-input btn btn-outline-primary mx-3" title="Add input"><i class="fa fa-plus"></i></a>
-                        </div>
-                    </div>
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title" style="font-size: 1.5rem;">Add Feeds</p>
+          
+          <div class="input_text mb-2">
+            <form>
+              <div class="form-row align-items-center">
+                <div  style="width:75%;" class="col-auto">
+                  <input type="text" class="input form-control " id="inlineFormInput" placeholder="Add Feed">
                 </div>
-                <div class="other-input-wrapper" style="margin-top: 10px;">
-                    <label for="limit">Feeds per URL (Optional)</label>
-                    <div class="form-group">
-                        <input type="text" value="{{n}}" class="form-control" name="limit">
-                    </div>
+                <div class="col-auto">
+                  <button id="addbutton" class="addbutton btn btn-outline-primary mx-3"><i class="fa fa-plus"></i></button>
                 </div>
-                <div>
-                    <input type="submit" class="btn btn-outline-primary mt-2" name="cmdsubmit">
-                </div>
-                
+              </div>
             </form>
-            </div>
           </div>
+          <form method="POST">
+            <div  class="form-group form-row">
+              <div id="listlinks" class="col-8">
 
-      
-        {% if links %}
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title" style="font-size: larger;">Your feed mix URLs.</h3>
-            <div class="mx-5" style="color:blue;">
-              {% for link in links %}
-             <div class="mb-2"> Full URL : {{link.original_url}}</div>
-             <div class="mb-4"> Short URL : {{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}</div>
-             <a class="btn btn-primary mb-4" href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">View FeedMix</a>
-             {% endfor %}
+              </div>
+            </div>
+            <div class="other-input-wrapper" style="margin-top: 10px;">
+                <label for="limit">Feeds per URL (Optional)</label>
+                <div class="form-group">
+                    <input style="width: 20%" type="text" value="{{n}}" class="form-control" name="limit">
+                </div>
+            </div>
+            <div>
+                <input type="submit" id="clear" class="btn btn-outline-primary mt-2" name="cmdsubmit">
             </div>
             
-          </div>
+        </form>
         </div>
+      </div>
 
-        {% endif %}
+  
+    {% if links %}
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title" style="font-size: larger;">Your feed mix URLs.</h3>
+        <div class="mx-5" style="color:blue;">
+          {% for link in links %}
+         <div class="mb-2"> Full URL : {{link.original_url}}</div>
+         <div class="mb-4"> Short URL : {{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}</div>
+         <div class="form-row align-items-center">
+          <div class="col-auto">
+            <a class="btn btn-primary mb-4" href="{{url_for('views.redirect_to_url',short_url=link.short_url, _external=True)}}">View FeedMix</a>
+          </div>
+          <div class="col-auto">
+            <form style="margin-top:-25px" action="/dellink" method="POST">
+              <button class="btn btn-danger btn-sm"><i type="submit" class="fa fa-trash red-color"></i></button>
+              <input name="linkid" type="hidden" value="{{ link.id }}">
+              </form>
+          </div>         
+         </div>
+         {% endfor %}
+        </div>
+        
+      </div>
+    </div>
 
+    {% endif %}
+
+
+
+</section>
+<!--
+<div class="form-row align-items-center">
+  <div  style="width:75%;" class="col-auto">
+    <input type="text" class="input form-control " id="inlineFormInput" placeholder="Add Feed">
+  </div>
+  <div class="col-auto">
+    <button class="addbutton btn btn-outline-primary mx-3"><i class="fa fa-plus"></i></button>
+  </div>
+</div>-->
+<script type="text/javascript">
+  const container = document.querySelector('#listlinks');
+var inputValue = document.querySelector('.input');
+const add = document.querySelector('.addbutton');
+
+if(window.localStorage.getItem("Links") == undefined){
+  var Links = [];
+  window.localStorage.setItem("Links", JSON.stringify(Links));
+}
+
+var LinksEX = window.localStorage.getItem("Links");
+var Links = JSON.parse(LinksEX);
+
+
+class item{
+constructor(name){
+ this.createItem(name);
+}
+
+ createItem(name){
+   var itemBox = document.createElement('div');
+     itemBox.classList.add('row');
+     itemBox.id='listurls';
+
+   var col1 = document.createElement('div');
+     col1.style.width = "85%";
+     col1.classList.add('col-auto');
+   var col2 = document.createElement('div');
+     col2.classList.add('col-auto');
     
 
-    </section>
+   var input = document.createElement('input');
+   input.type = "text";
+   input.value = name;
+   input.name="field[]"
+   input.classList.add('form-control');
 
-    <script>
-        $(document).ready(function(){
-            var max_input_fields = 10;
-            var add_input = $('.add-input');
-            var input_wrapper = $('.input-wrapper');
-            var new_input = ' <div class="form-group form-row"><div class="col-8"><input type="text" name="field[]" value="" class="form-control input" id="exampleFormControlInput1" placeholder="Add Feed"> </div><div class="col-2 remove-input"><a href="javascript:void(0);" class=" btn btn-outline-danger mx-3" title="Remove input"><i class="fa fa-minus"></i></a></div></div>';
-            var add_input_count = 1; 
-            $(add_input).click(function(){
-                if(add_input_count < max_input_fields){
-                    add_input_count++; 
-                    $(input_wrapper).append(new_input); 
-                }
-            });
-            $(input_wrapper).on('click', '.remove-input', function(e){
-                e.preventDefault();
-                $(this).parent('div').remove();
-                add_input_count--;
-            });
-        });
-        </script>
+   var remove = document.createElement('button');
+   remove.classList.add('removebutton');
+   remove.innerHTML = '<i style="padding: 6px 12px;" class="fa fa-minus"></i>';
+   remove.addEventListener('click', () => this.remove(itemBox, name));
 
+   
+
+   container.appendChild(itemBox);
+   itemBox.appendChild(col1);
+   itemBox.appendChild(col2);
+   col1.appendChild(input);
+   col2.appendChild(remove);
+
+ }
+ 
+ remove(itemBox, name){
+     itemBox.parentNode.removeChild(itemBox);
+     let index = Links.indexOf(name);
+     Links.splice(index, 1);
+     window.localStorage.setItem("Links", JSON.stringify(Links));
+ }
+}
+
+add.addEventListener('click', check);
+window.addEventListener('keydown', (e) => {
+if(e.which == 13){
+ check();
+}
+})
+
+function check(){
+if(inputValue.value != ""){
+ new item(inputValue.value);
+     Links.push(inputValue.value);
+     window.localStorage.setItem("Links", JSON.stringify(Links));
+ inputValue.value = "";
+}
+}
+
+
+for (var v = 0 ; v < Links.length ; v++){
+ new item(Links[v]);
+}
+
+$(document).on('click','#clear',function() {
+  localStorage.clear();
+  location.reload(true);
+});
+$(document).on('click','.removebutton',function() {
+  location.reload(true);
+});
+var planValue = document.querySelector('.planrestrict');
+$(document).on('click','#addbutton',function() {
+  var arrayFromStroage = JSON.parse(localStorage.getItem("Links"));
+  let button = document.querySelector(".addbutton");
+  var arrayLength = arrayFromStroage.length;
+  if (arrayLength >= planValue.value) {
+    button.disabled = true; //button remains disabled
+    Swal.fire({
+      icon: 'info',
+      title: 'Oops...',
+      text: 'Urls are Maxed out!',
+      footer: '<a href="">If you want change plan Nows the time</a>',
+      confirmButtonText:
+    '<i class="fa fa-close" style="font-size:20px;color:white"></i></i>',
+    })
+  } else {
+      button.disabled = false; //button is enabled
+      
+  }
+});
+
+
+</script>
   {% endblock %}
   {% block footer %}
   <footer class="footer">

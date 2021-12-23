@@ -3,7 +3,7 @@ from flask import Blueprint, render_template,redirect,request
 from flask.helpers import flash
 from .models import db
 from flask_login import login_user, login_required, logout_user, current_user
-from .models import Link,User
+from .models import Link,User,Subscription
 
 views = Blueprint('views', __name__)
 
@@ -44,10 +44,18 @@ def stats():
 @views.route('/add', methods = ['GET','POST'])
 @login_required
 def add():
-    links = Link.query.filter_by(user_id=current_user.id).order_by(Link.id.desc()).all() 	
+    user_plan = User.query.filter_by(id=current_user.id).first()
+    sub_plan = Subscription.query.filter_by(sub_id=user_plan.plan_id).first()
+    sub_maxurls = sub_plan.max_urls
+    sub_maxfeeds = sub_plan.max_feeds
+    links = Link.query.filter_by(user_id=current_user.id).limit(sub_maxfeeds).all()
+    
     if request.method == 'POST':
         full_url = request.form.getlist('field[]')
         n = request.form['limit']
+        if len(full_url)<0:
+            flash('Input field cannot be empty', category='error')
+            return render_template('url_add.html',sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls,user=current_user,links=links)
         i = 1
         #str = 'http://127.0.0.1:8000/rss?f='
         str = 'https://feed-mixer.herokuapp.com/rss?f='
@@ -62,20 +70,32 @@ def add():
                     i += 1
             else:
                 flash('Input field cannot be empty', category='error')
-                return render_template('url_add.html',user=current_user,links=links)
+                return render_template('url_add.html',user=current_user,links=links,sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls)
         if n:
             if n.isdigit():
                 str += '&n=' + n
             else:
                 flash('Feeds per URL should be integer', category='error')
-                return render_template('url_add.html',user=current_user,links=links) 
-        
+                return render_template('url_add.html',user=current_user,links=links,sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls) 
+        if len(links) >= sub_maxfeeds:
+            flash('Feed are Maxed out!', category='error')
+            return render_template('url_add.html',user=current_user,links=links,sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls)
         link = Link(original_url=str, user_id=current_user.id)
         db.session.add(link)
         db.session.commit()
         result = Link.query.filter_by(original_url=str).first_or_404()
-        links = Link.query.filter_by(user_id=current_user.id).all()
+        links = Link.query.filter_by(user_id=current_user.id).limit(sub_maxfeeds).all()
         
-        return render_template('link_added.html',original_url=result.original_url,new_link=result.short_url,user=current_user)
-    links = Link.query.filter_by(user_id=current_user.id).all()
-    return render_template('url_add.html',user=current_user,links=links)
+        return render_template('link_added.html',original_url=result.original_url,new_link=result.short_url,user=current_user,sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls)
+    links = Link.query.filter_by(user_id=current_user.id).limit(sub_maxfeeds).all()
+    return render_template('url_add.html',user=current_user,links=links,sub_maxfeeds=sub_maxfeeds,sub_maxurls=sub_maxurls)
+
+
+@views.route('/dellink', methods = ['GET','POST'])
+def dellink():
+  if request.method == 'POST':
+    link = request.form['linkid']
+    Cust_id = Link.query.get(link)
+    db.session.delete(Cust_id)
+    db.session.commit()
+    return redirect('/add')

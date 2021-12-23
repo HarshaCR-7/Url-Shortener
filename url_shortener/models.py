@@ -36,3 +36,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     links = db.relationship('Link')
+    plan_id = db.Column(db.INTEGER, db.ForeignKey('subscription.sub_id'),nullable=False)
+    
+class Subscription(db.Model):
+    sub_id = db.Column(db.Integer, primary_key=True)
+    users = db.relationship('User')
+    name = db.Column(db.String(150))
+    price = db.Column(db.Integer)
+    max_urls = db.Column(db.Integer)
+    max_feeds = db.Column(db.Integer)

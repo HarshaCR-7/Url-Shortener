@@ -22,6 +22,9 @@
     </ul>
     <ul class="navbar-nav">
       {% if user.is_authenticated %}
+      <li style="float:left;" class="nav-item">
+        <a class="nav-link" href="/add">ADD</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="/add">{{user.first_name}}</a>
       </li>

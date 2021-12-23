@@ -1,14 +1,25 @@
 {% extends "base.html" %}
 
 {% block title %}Sign Up{% endblock %}
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 {% block content %}
 <style>
+  
+  .card-pricing.popular {
+    z-index: 1;
+    border: 3px solid #007bff;
+}
+.card-pricing .list-unstyled li {
+    padding: .5rem 0;
+    color: #6c757d;
+}
   .alert {
     padding: 20px;
     background-color: #00ff4c;
-    color: white;
+    color: rgb(255, 255, 255);
   }
   
   .closebtn {
@@ -25,6 +36,91 @@
   .closebtn:hover {
     color: black;
   }
+
+
+
+  @import url('https://fonts.googleapis.com/css?family=Lato:400,500,600,700&display=swap');
+
+.wrapper{
+  display: inline-flex;
+  background: #fff;
+  height: 500px;
+  width: 1000px;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  padding: 20px 15px;
+  box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+}
+.wrapper .option{
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 10px;
+  border: 2px solid lightgrey;
+  transition: all 0.3s ease;
+}
+.wrapper .option .dot{
+  height: 20px;
+  width: 20px;
+  background: #d9d9d9;
+  border-radius: 50%;
+  position: relative;
+}
+.wrapper .option .dot::before{
+  position: absolute;
+  content: "";
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background: #0069d9;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+input[type="radio"]{
+  display: none;
+}
+#option-2:checked:checked ~ .option-2{
+  border-color: #00d924;
+  background: #00d924;
+}
+#option-1:checked:checked ~ .option-1{
+  border-color: #0069d9;
+  background: #0069d9;
+}
+#option-3:checked:checked ~ .option-3{
+  border-color: #d90000;
+  background: #d90000;
+}
+#option-1:checked:checked ~ .option-1 .dot,
+#option-3:checked:checked ~ .option-3 .dot,
+#option-2:checked:checked ~ .option-2 .dot{
+  background: #fff;
+}
+#option-1:checked:checked ~ .option-1 .dot::before,
+#option-3:checked:checked ~ .option-3 .dot::before,
+#option-2:checked:checked ~ .option-2 .dot::before{
+  opacity: 1;
+  transform: scale(1);
+}
+.wrapper .option span{
+  font-size: 20px;
+  color: #808080;
+}
+#option-1:checked:checked ~ .option-1 span,
+#option-3:checked:checked ~ .option-3 span,
+#option-2:checked:checked ~ .option-2 span{
+  color: #fff;
+}
 </style>
 
 {% if message.1 == 'success' %}
@@ -55,10 +151,6 @@
             </a>
           </div><!-- End Logo -->
 
-          <div class="card mb-3">
-
-            <div class="card-body">
-
               <div class="pt-4 pb-2">
                 <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
                 <p class="text-center small">Enter your personal details to create account</p>
@@ -87,19 +179,50 @@
                     <label for="yourPassword2" class="form-label">Confirm Password</label>
                     <input type="password" name="password2" class="form-control" id="yourPassword2" required>
                     <div class="invalid-feedback">Please confirm password!</div>
-                  </div>
+                </div>
 
-                
+                <div class="col-12">
+                  <div class="wrapper">
+                    <input type="radio" value="Basic" name="select" id="option-1" checked>
+                    <input type="radio" value="Pro" name="select" id="option-2">
+                    <input type="radio" value="Premium" name="select" id="option-3">
+                      <label for="option-1" class="option option-1">
+                        <span>
+                          <h1>Basic</h1>
+                          <h2>&#x20B9; 0 <span>/Month</span>  </h2>
+                          <h3>3<span> Max Urls</span> </h3>  
+                        <h3>2<span> Max Feeds</span> </h3>
+                        </span>
+                        
+                         </label>
+                      <label for="option-2" class="option option-2">
+                        <span>
+                          <h1>Pro</h1>
+                          <h2>&#x20B9; 100 <span>/Month</span>  </h2>
+                          <h3>50<span> Max Urls</span> </h3>  
+                        <h3>50<span> Max Feeds</span> </h3>
+                        </span>
+                      </label>
+                      <label for="option-3" class="option option-3">
+                        <span>
+                          <h1>Premium</h1>
+                          <h2>&#x20B9; 150 <span>/Month</span>  </h2>
+                          <h3>100<span> Max Urls</span> </h3>  
+                        <h3>500<span> Max Feeds</span> </h3>
+                        </span>
+                        
+                      </label>
+                   </div>
+                </div>
+
+
                 <div class="col-12">
                   <button class="btn btn-primary w-100" type="submit">Create Account</button>
                 </div>
-                <div class="col-12">
-                  <p class="small mb-0">Already have an account? <a href="/login">Log in</a></p>
+                <div style="text-align: center;" class="col-12">
+                  <p  class="small mb-0">Already have an account? <a href="/login">Log in</a></p>
                 </div>
               </form>
-
-            </div>
-          </div>
 
         </div>
       </div>
