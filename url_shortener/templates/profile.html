@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+<style>
+  #footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:60px;   /* Height of the footer */
+    background:#6cf;
+ }
+
+ body {
+  background: rgb(99, 39, 120)
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #BA68C8
+}
+
+.profile-button {
+  background: rgb(99, 39, 120);
+  box-shadow: none;
+  border: none
+}
+
+.profile-button:hover {
+  background: #682773
+}
+
+.profile-button:focus {
+  background: #682773;
+  box-shadow: none
+}
+
+.profile-button:active {
+  background: #682773;
+  box-shadow: none
+}
+
+.back:hover {
+  color: #682773;
+  cursor: pointer
+}
+
+.labels {
+  font-size: 11px
+}
+
+.add-experience:hover {
+  background: #BA68C8;
+  color: #fff;
+  cursor: pointer;
+  border: solid 1px #BA68C8
+}
+</style>
+{% block body %}
+  <nav class="navbar navbar-expand-lg navbar-light rounded mb-5 py-4" style="background-color: white; font-size: large; opacity: 1; box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);">
+      <a class="navbar-brand" href="#"><div class="d-flex align-items-center">
+        <a href="/" class="logo d-flex ">
+         <div class="icon">
+          <i class="fa fa-rss fa-lg mx-1 mt-1" style="color: rgba(12, 12, 105, 0.932);"></i>
+         </div>
+         
+          <span>RSS FeedMixer</span>
+        </a>
+      </div></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse align-items-center me-5 pe-5" id="navbarsExample09">
+        <ul class="navbar-nav mr-auto">
+          
+        </ul>
+      </ul>
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="/add"><i class="fa fa-user-circle" aria-hidden="true"></i> {{user.first_name}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item ">
+              <a class="nav-link" href="/register">Register</a>
+          </li>
+        {% endif %}
+      </ul>
+      </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container rounded bg-white mt-5 mb-5">
+  <div class="row">
+      <div class="col-md-3 border-right">
+          <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://i.pinimg.com/564x/e7/c3/f4/e7c3f4a076b8472e0b1bd9c00a847f7f.jpg"><span class="font-weight-bold">{{ user.first_name }}</span><span class="text-black-50">{{ user.email }}</span><span> </span></div>
+      </div>
+      <div class="col-md">
+          <div class="p-0 py-5">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4 class="text-right">Profile</h4>
+              </div>
+              <div class="row mt-2">
+                  <div class="col-md-6"><div>
+                    <label style="font-size:15px;font-weight:bold;" class="labels">Name : <span style="font-size:25px;font-weight:bold;" >{{ user.first_name }}</span> </label>
+                  </div>
+                  <div>
+                    <label style="font-size:15px;font-weight:bold;" class="labels">Email : <span style="font-size:15px;font-weight:bold;" >{{ user.email }}</span> </label>
+                  </div>
+                  
+              </div>
+              <div class="row mt-3">
+                
+              </div>
+              
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="p-0 py-5">
+            <div>
+              Current PLan : <span style="padding:130px; ;font-size:25px;font-weight:bold;">{{ plan }}</span>
+            </div>
+            
+      </div>
+      <div style="float:bottom;" class="d-flex justify-content-between align-items-center experience"><span>Change Plan &nbsp; <a id="planchange" ><button  style="border-radius: 50%;" class="btn btn-dark btn-sm"><i class="fa fa-edit"></i></button></a> </span>
+      </div>
+  </div>
+
+</div>
+</div>
+</div>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+  $(document).on('click','#planchange',function() {
+    Swal.fire({
+      width: '800px',
+      html:'<div><h1 style="text-align:center;font-weight:bold;color:rgb(0, 88, 252)">Select Plan</h1></div><br><form action="/profile" method="POST"><div style="width:100%;" class="btn-group btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="options" value="Basic" autocomplete="off" checked> <div style="background-color: black;" class="card"><div class="card-body"><h5 style="color: rgb(0, 88, 252)" class="card-title">Basic</h5><p class="card-text"><div>&#x20B9; 0 <span>/Month</span></div><div>3<span> Max Urls</span></div><div>2<span> Max Feeds</span></div></p><input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked></div></div></label><label class="btn btn-secondary"><input type="radio" name="options" value="Pro" autocomplete="off"> <div style="background-color: black;" class="card"><div class="card-body"><h5 style="color: rgb(0, 88, 252)" class="card-title">Pro</h5><p class="card-text"><div>&#x20B9; 100 <span>/Month</span></div><div>50<span> Max Urls</span></div><div>50<span> Max Feeds</span></div></p><input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked></div></div></label><label class="btn btn-secondary"><input type="radio" name="options"  value="Premium" autocomplete="off"> <div style="background-color: black;" class="card"><div class="card-body"><h5 style="color: rgb(0, 88, 252)" class="card-title">Premium</h5><p class="card-text"><div>&#x20B9; 150 <span>/Month</span></div><div>100<span> Max Urls</span></div><div>500<span> Max Feeds</span></div></p><input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios"></div></div></label></div><button style="margin-top:30px" type="submit" class="btn btn-primary btn-lg">Confirm</button></form>',
+      showConfirmButton: false,
+      
+    })
+  });
+  
+  
+  </script>
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span>RSS FeedMixer</span></strong>. All Rights Reserved
+  </div>
+</footer>
+
+  {% endblock %}
+
+  {% block footer %}
+  <!-- End Footer -->
+  {% endblock %}

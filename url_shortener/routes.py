@@ -1,5 +1,5 @@
 import re
-from flask import Blueprint, render_template,redirect,Response,request
+from flask import Blueprint, render_template,redirect,Response,request,url_for
 from flask.helpers import flash
 from .models import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -96,3 +96,17 @@ def dellink():
     db.session.delete(Cust_id)
     db.session.commit()
     return redirect('/add')
+
+
+
+
+@views.route('/profile', methods = ['GET','POST'])
+def profile():
+    plan = Subscription.query.filter_by(sub_id = current_user.plan_id).first()
+    if request.method == 'POST':
+        options = request.form['options']
+        user_plan = Subscription.query.filter_by(name=str(options)).first()
+        current_user.plan_id = user_plan.sub_id
+        db.session.commit()
+        return redirect(url_for('views.profile'))
+    return render_template('profile.html',user=current_user,plan=plan.name)
