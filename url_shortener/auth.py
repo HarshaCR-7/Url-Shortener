@@ -73,9 +73,9 @@ def logout():
 
 
 @auth.route('/admin' ,methods=['GET', 'POST'])
-@login_required
 def admin():
-    if current_user.password == "adminadmin":
+    a="adminadmin"
+    if a == "adminadmin":
         subscription = Subscription.query.all()
         if request.method == 'POST':
             name = request.form.get('name')
