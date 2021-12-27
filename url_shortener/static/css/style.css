@@ -17,6 +17,9 @@ body {
   background: #f6f9ff;
   color: #444444;
 }
+.container{
+  min-height: 70vh;
+}
 
 a {
   color: #4154f1;
@@ -1071,18 +1074,21 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   transition: all 0.3s;
   border-top: 1px solid #cddfff;
+  background-color: rgb(6, 67, 97);
+  
 }
 .footer .copyright {
   text-align: center;
-  color: #012970;
+  color: #dbdfe6;
 }
 .footer .credits {
   padding-top: 5px;
   text-align: center;
   font-size: 13px;
-  color: #012970;
+  color: #cfd5e0;
 }
 
 .other-input-wrapper div {
   margin-bottom: 10px;
 }
+
